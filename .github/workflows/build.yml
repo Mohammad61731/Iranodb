@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Unzip project
+        run: unzip -q IranOBD.zip -d .
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -14,8 +16,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.7
-      - run: gradle assembleDebug --no-daemon
+      - name: Build
+        working-directory: IranOBD
+        run: gradle assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
           name: IranOBD-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: IranOBD/app/build/outputs/apk/debug/*.apk
